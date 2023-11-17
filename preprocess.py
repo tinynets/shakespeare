@@ -4,6 +4,8 @@ This file is used to preprocess the data and clean it in preparation for trainin
 import os
 import numpy as np
 from torchtext.data.utils import get_tokenizer
+from torchtext.vocab import build_vocab_from_iterator
+from collections import Counter
 
 class Preprocess:
     def __init__(self, datadir):
@@ -12,6 +14,7 @@ class Preprocess:
         self.data = self.load_data()
         self.tokens = []
         self.preprocess_data()
+        self.vocab = build_vocab_from_iterator([self.tokens])
         self.analysis = self.analyze_data()
         
 
@@ -32,8 +35,9 @@ class Preprocess:
         
         clean_data = [line.strip().lower() for line in self.data if line.strip() != '']
         line_lengths = [len(line) for line in clean_data]
-
         analysis["avg_len"] = np.mean(line_lengths)
+        analysis["word_counts"] = Counter(self.tokens)
+
         return analysis
     
     def preprocess_data(self):
