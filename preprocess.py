@@ -10,8 +10,8 @@ class Preprocess:
         self.data_dir = datadir
         self.raw = None
         self.data = self.load_data()
-        self.preprocess_data()
         self.tokens = []
+        self.preprocess_data()
         self.analysis = self.analyze_data()
         
 
@@ -31,22 +31,22 @@ class Preprocess:
         analysis = {}
         
         clean_data = [line.strip().lower() for line in self.data if line.strip() != '']
-        print(clean_data)
         line_lengths = [len(line) for line in clean_data]
 
         analysis["avg_len"] = np.mean(line_lengths)
         return analysis
     
     def preprocess_data(self):
+        tokenizer = get_tokenizer('basic_english')
         lines = [line.strip().lower() for line in self.data if line.strip()]
-        self.data = lines
+        tokens = [token for line in lines for token in tokenizer(line)]
+        self.tokens = tokens
 
     # defining here because one may want to run analysis and decide after viewing the data
     def set_padding_size(self, size):
         self.padding_size = size
 
-
-    
-
+preprocessed = Preprocess("data")
+print(preprocessed.tokens[:100])
 
         
