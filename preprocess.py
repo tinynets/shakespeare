@@ -16,6 +16,7 @@ class Preprocess:
         self.preprocess_data()
         self.vocab = build_vocab_from_iterator([self.tokens])
         self.analysis = self.analyze_data()
+        self.numerical_tokens = [self.vocab[token] for token in self.tokens]
         
 
     def load_data(self):
@@ -50,7 +51,5 @@ class Preprocess:
     def set_padding_size(self, size):
         self.padding_size = size
 
-preprocessed = Preprocess("data")
-print(preprocessed.tokens[:100])
 
         
